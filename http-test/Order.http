@@ -1,0 +1,51 @@
+### Inserción de un usuario
+
+POST http://localhost:8008/api/v1/orders
+Content-Type: application/json
+Accept: application/json
+
+{
+  "warehouseId": 1,
+  "customerId": 1,
+  "date": "1991-04-30T00:00:00.000-0000",
+  "status": true
+}
+
+### Inserción incorrecta de un usuario
+
+POST http://localhost:8030/api/v1/orders
+Content-Type: application/json
+Accept: application/json
+
+{
+  "date": "1991-04-30T00:00:00.000-0000",
+  "status": true
+}
+
+### Probamos listar todos los clientes
+
+GET http://localhost:8008/api/v1/orders
+Authorization: bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmZWF0dXJlcyI6WyJCVVRUT05fREVMRVRFX1VTRVIiLCJQQUdFX1BST0RVQ1RfTUFOQUdFTUVOVCIsIlBBR0VfVVNFUl9NQU5BR0VNRU5UIl0sInN1YiI6IjQiLCJpc3MiOiJQaXJhdGVCYXkiLCJ0eXBlIjoiQVVUSE4iLCJleHAiOjE1OTM1MDAwOTZ9.82t64kAff32DqQW_alAzdQ3YS52ks8t3gDPcmZtml38
+Accept: application/json
+
+
+### Eliminamos un cliente
+
+DELETE http://localhost:8008/api/v1/orders/1
+Accept: application/json
+
+
+### Actualizamos el cliente
+
+PUT http://localhost:8008/api/v1/orders/3
+Content-Type: application/json
+Accept: application/json
+
+{
+  "warehouseId": "Maria",
+  "orderUserId": "Lopex",
+  "date": "1991-04-30T00:00:00.000-0000",
+  "status": true
+}
+
+###

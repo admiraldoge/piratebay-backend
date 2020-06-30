@@ -59,7 +59,7 @@ CREATE TABLE employee (
 -- Table: employee_wh
 CREATE TABLE employee_wh (
     employe_wh_id serial  NOT NULL,
-    warehouse_id int  NOT NULL,
+    warehouseId int  NOT NULL,
     employee_id int  NOT NULL,
     status int  NOT NULL,
     tx_id int  NOT NULL,
@@ -110,9 +110,9 @@ CREATE TABLE item (
 
 -- Table: order
 CREATE TABLE "order" (
-    order_id serial  NOT NULL,
+    orderId serial  NOT NULL,
     provider_id int  NOT NULL,
-    warehouse_id int  NOT NULL,
+    warehouseId int  NOT NULL,
     order_user_id int  NOT NULL,
     date timestamp  NOT NULL,
     status int  NOT NULL,
@@ -120,7 +120,7 @@ CREATE TABLE "order" (
     tx_username varchar(100)  NOT NULL,
     tx_host varchar(100)  NOT NULL,
     tx_date timestamp  NOT NULL,
-    CONSTRAINT order_pk PRIMARY KEY (order_id)
+    CONSTRAINT order_pk PRIMARY KEY (orderId)
 );
 
 -- Table: person
@@ -165,7 +165,7 @@ CREATE TABLE product (
 -- Table: product_order
 CREATE TABLE product_order (
     provider_product_id serial  NOT NULL,
-    order_id int  NOT NULL,
+    orderId int  NOT NULL,
     product_id int  NOT NULL,
     unit_price decimal(10,5)  NOT NULL,
     qtty_requested int  NOT NULL,
@@ -248,7 +248,7 @@ CREATE TABLE user_role (
 
 -- Table: warehouse
 CREATE TABLE warehouse (
-    warehouse_id serial  NOT NULL,
+    warehouseId serial  NOT NULL,
     warehouse_name int  NOT NULL,
     warehouse_address text  NOT NULL,
     latitude real  NULL,
@@ -258,7 +258,7 @@ CREATE TABLE warehouse (
     tx_username varchar(100)  NOT NULL,
     tx_host varchar(100)  NOT NULL,
     tx_date timestamp  NOT NULL,
-    CONSTRAINT warehouse_pk PRIMARY KEY (warehouse_id)
+    CONSTRAINT warehouse_pk PRIMARY KEY (warehouseId)
 );
 
 -- foreign keys
@@ -312,8 +312,8 @@ ALTER TABLE employee_wh ADD CONSTRAINT employee_warehouse_employee
 
 -- Reference: employee_warehouse_warehouse (table: employee_wh)
 ALTER TABLE employee_wh ADD CONSTRAINT employee_warehouse_warehouse
-    FOREIGN KEY (warehouse_id)
-    REFERENCES warehouse (warehouse_id)  
+    FOREIGN KEY (warehouseId)
+    REFERENCES warehouse (warehouseId)
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
@@ -344,16 +344,16 @@ ALTER TABLE "order" ADD CONSTRAINT order_user
 
 -- Reference: order_warehouse (table: order)
 ALTER TABLE "order" ADD CONSTRAINT order_warehouse
-    FOREIGN KEY (warehouse_id)
-    REFERENCES warehouse (warehouse_id)  
+    FOREIGN KEY (warehouseId)
+    REFERENCES warehouse (warehouseId)
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;
 
 -- Reference: product_order_order (table: product_order)
 ALTER TABLE product_order ADD CONSTRAINT product_order_order
-    FOREIGN KEY (order_id)
-    REFERENCES "order" (order_id)  
+    FOREIGN KEY (orderId)
+    REFERENCES "order" (orderId)
     NOT DEFERRABLE 
     INITIALLY IMMEDIATE
 ;

@@ -49,10 +49,11 @@ public class SecurityBl {
         String sha256hex = Hashing.sha256()
                 .hashString(password+salt, StandardCharsets.UTF_8)
                 .toString(); // TODO Repetir el algoritmo de hash N veces
+        System.out.println("Password: "+password+" hashed is "+sha256hex);
         Integer userId = userDao.findUserIdByUsernameAndPassword(username, sha256hex);
         if (userId != null ) {
-            result.put("authentication", generateJWT(userId, 2, "AUTHN", userDao.findAllFeatureCodeByUserId(userId)));
-            result.put("refresh", generateJWT(userId, 6, "REFRESH", null));
+            result.put("authentication", generateJWT(userId, 10, "AUTHN", userDao.findAllFeatureCodeByUserId(userId)));
+            result.put("refresh", generateJWT(userId, 20, "REFRESH", null));
             return result;
         } else {
             return null;
@@ -79,8 +80,8 @@ public class SecurityBl {
 
         Map<String, String> result = new HashMap<>();
         Integer userIdAsInt = Integer.parseInt(idUsuario);
-        result.put("authentication", generateJWT(userIdAsInt, 2, "AUTHN", userDao.findAllFeatureCodeByUserId(userIdAsInt)));
-        result.put("refresh", generateJWT(Integer.parseInt(idUsuario), 6, "REFRESH", null));
+        result.put("authentication", generateJWT(userIdAsInt, 10, "AUTHN", userDao.findAllFeatureCodeByUserId(userIdAsInt)));
+        result.put("refresh", generateJWT(Integer.parseInt(idUsuario), 20, "REFRESH", null));
         return result;
 
     }
