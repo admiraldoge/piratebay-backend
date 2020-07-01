@@ -38,28 +38,6 @@ public class OrderDao {
         return userId;
     }
 
-    public List<OrderModel> findAllOrders() {
-        // Implmentamos SQL varible binding para evitar SQL INJECTION
-        String query = "SELECT order_id, warehouse_id, customer_id, order_status, date, status FROM \"order\" WHERE status = 1";
-        List<OrderModel> result = null;
-        try {
-            result = jdbcTemplate.query(query, new RowMapper<OrderModel>() {
-                @Override
-                public OrderModel mapRow(ResultSet resultSet, int i) throws SQLException {
-                    return new OrderModel(resultSet.getInt(1),
-                            resultSet.getInt(2),
-                            resultSet.getInt(3),
-                            resultSet.getInt(3),
-                            resultSet.getDate(5),
-                            resultSet.getInt(6));
-                }
-            });
-        } catch (Exception ex) {
-            throw new RuntimeException();
-        }
-        return result;
-    }
-
     public List<CompletedOrderModel> findAllCompletedOrders() {
         // Implmentamos SQL varible binding para evitar SQL INJECTION
         String query = "select order_id,warehouse_id, c.customer_id, order_status, paid_order_date, prepared_order_date, dispatched_order_date, delivered_order_date, first_name, first_surname, address, o.status\n" +
@@ -136,6 +114,30 @@ public class OrderDao {
         return result;
     }
 
+    public List<OrderProblemModel> findAllOrderProblems() {
+        // Implmentamos SQL varible binding para evitar SQL INJECTION
+        String query = "select op.order_id,op.problem_id,op.order_status, p.title, p.date, p.problem_description\n" +
+                "from order_problem op\n" +
+                "join problem p on op.problem_id = p.problem_id";
+        List<OrderProblemModel> result = null;
+        try {
+            result = jdbcTemplate.query(query, new RowMapper<OrderProblemModel>() {
+                @Override
+                public OrderProblemModel mapRow(ResultSet resultSet, int i) throws SQLException {
+                    return new OrderProblemModel(resultSet.getInt(1),
+                            resultSet.getInt(2),
+                            resultSet.getInt(3),
+                            resultSet.getString(4),
+                            resultSet.getString(5),
+                            resultSet.getString(6));
+                }
+            });
+        } catch (Exception ex) {
+            throw new RuntimeException();
+        }
+        return result;
+    }
+
     public int updateStatus(Integer orderId, Integer orderStatus, String date) {
         //Switch between status
         String query = "";
@@ -182,6 +184,20 @@ public class OrderDao {
             }
         }
         return 1;
+    }
+
+    public int updateProblem(Integer orderId, String problemDescription) {
+        //Switch between status
+        String query = "update \"order\"\n" +
+                "set has_problem = true,\n" +
+                "problem_description = ?\n" +
+                "where order_id = ?";
+
+        try {
+            return jdbcTemplate.update(query, problemDescription, orderId);
+        } catch (Exception ex) {
+            throw new RuntimeException();
+        }
     }
 
 

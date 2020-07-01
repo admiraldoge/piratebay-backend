@@ -153,4 +153,66 @@ public class OrderController {
 
         return new ResponseEntity(orderDao.updateCopies(orderId, orderMovieCopyModels), HttpStatus.OK);
     }
+
+    @RequestMapping(
+            path = "/problems",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity findAllProblems(
+            @RequestHeader("Authorization") String authorization
+    ) { // bearer asdasdasdasd
+
+        // Lo unico que estamos haciendo es decodificar el token.
+        String tokenJwT = authorization.substring(7);
+        System.out.println("TOKEN JWT: " + tokenJwT);
+        DecodedJWT decodedJWT = JWT.decode(tokenJwT);
+        String idUsuario = decodedJWT.getSubject();
+        System.out.println("USUARIO: " + idUsuario);
+
+        if(!"AUTHN".equals(decodedJWT.getClaim("type").asString()) ) {
+            throw new RuntimeException("El token proporcionado no es un token de Autenthication");
+        }
+        // El siguiente código valida si el token es bueno y ademas es un token de authentication
+
+        Algorithm algorithm = Algorithm.HMAC256(secretJwt);
+        JWTVerifier verifier = JWT.require(algorithm)
+                .withIssuer("PirateBay")
+                .build();
+        verifier.verify(tokenJwT);
+
+        return new ResponseEntity(orderDao.findAllOrderProblems(), HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            path = "/problem/{orderId}",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateProblem(
+            @RequestHeader("Authorization") String authorization,
+            @PathVariable("orderId") Integer orderId,
+            @PathVariable String problemDescription
+
+
+    ) { // bearer asdasdasdasd
+
+        // Lo unico que estamos haciendo es decodificar el token.
+        String tokenJwT = authorization.substring(7);
+        System.out.println("TOKEN JWT: " + tokenJwT);
+        DecodedJWT decodedJWT = JWT.decode(tokenJwT);
+        String idUsuario = decodedJWT.getSubject();
+        System.out.println("USUARIO: " + idUsuario);
+
+        if(!"AUTHN".equals(decodedJWT.getClaim("type").asString()) ) {
+            throw new RuntimeException("El token proporcionado no es un token de Autenthication");
+        }
+        // El siguiente código valida si el token es bueno y ademas es un token de authentication
+
+        Algorithm algorithm = Algorithm.HMAC256(secretJwt);
+        JWTVerifier verifier = JWT.require(algorithm)
+                .withIssuer("PirateBay")
+                .build();
+        verifier.verify(tokenJwT);
+
+        return new ResponseEntity(orderDao.updateProblem(orderId, problemDescription), HttpStatus.OK);
+    }
 }
