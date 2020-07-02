@@ -7,8 +7,9 @@ public class OrderMovieModel {
     private Integer warehouseId;
     private Integer preparedQuantity;
     private String name,image;
+    private Double cost;
 
-    public OrderMovieModel(Integer orderId, Integer movieId, Integer quantity, Integer warehouseId, Integer preparedQuantity, String name, String image) {
+    public OrderMovieModel(Integer orderId, Integer movieId, Integer quantity, Integer warehouseId, Integer preparedQuantity, String name, String image, Double cost) {
         this.orderId = orderId;
         this.movieId = movieId;
         this.quantity = quantity;
@@ -16,6 +17,15 @@ public class OrderMovieModel {
         this.preparedQuantity = preparedQuantity;
         this.name = name;
         this.image = image;
+        this.cost = cost;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
     }
 
     public Integer getMovieId() {

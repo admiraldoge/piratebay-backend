@@ -91,7 +91,7 @@ public class OrderDao {
 
     public List<OrderMovieModel> findAllOrderMovies() {
         // Implmentamos SQL varible binding para evitar SQL INJECTION
-        String query = "select order_id, m.movie_id, om.quantity,m.warehouse_id,om.prepared_quantity, m.name, m.image\n" +
+        String query = "select order_id, m.movie_id, om.quantity,m.warehouse_id,om.prepared_quantity, m.name, m.image, m.cost\n" +
                 "from order_movie om\n" +
                 "join movie m on om.movie_id = m.movie_id";
         List<OrderMovieModel> result = null;
@@ -105,7 +105,9 @@ public class OrderDao {
                             resultSet.getInt(4),
                             resultSet.getInt(5),
                             resultSet.getString(6),
-                            resultSet.getString(7));
+                            resultSet.getString(7),
+                            resultSet.getDouble(8)
+                    );
                 }
             });
         } catch (Exception ex) {
@@ -116,7 +118,7 @@ public class OrderDao {
 
     public List<OrderProblemModel> findAllOrderProblems() {
         // Implmentamos SQL varible binding para evitar SQL INJECTION
-        String query = "select op.order_id,op.problem_id,op.order_status, p.title, p.date, p.problem_description\n" +
+        String query = "select op.order_id,op.problem_id, p.order_status, p.title, p.date, p.problem_description\n" +
                 "from order_problem op\n" +
                 "join problem p on op.problem_id = p.problem_id";
         List<OrderProblemModel> result = null;
@@ -185,20 +187,5 @@ public class OrderDao {
         }
         return 1;
     }
-
-    public int updateProblem(Integer orderId, String problemDescription) {
-        //Switch between status
-        String query = "update \"order\"\n" +
-                "set has_problem = true,\n" +
-                "problem_description = ?\n" +
-                "where order_id = ?";
-
-        try {
-            return jdbcTemplate.update(query, problemDescription, orderId);
-        } catch (Exception ex) {
-            throw new RuntimeException();
-        }
-    }
-
 
 }
